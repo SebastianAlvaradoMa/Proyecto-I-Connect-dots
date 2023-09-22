@@ -3,7 +3,7 @@ import java.net.*;
 //Importamos las librerias de archivos
 class ClienteSocket {
     public static void main(String[] args) {
-        final String servidorIP = "host local"; // el host local se puede cambiar por la ip local
+        final String servidorIP = "localhost"; // el host local se puede cambiar por la ip local
         final int puerto = 12345; //Igualmente el puerto se puede cambiar
 
         try (Socket clienteSocket = new Socket(servidorIP, puerto)) {
