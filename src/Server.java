@@ -27,10 +27,50 @@ class Scratch {
 
                     // Cerrar la conexión con el cliente
                     clienteSocket.close();
+
+
                 }
             }
         } catch (IOException e) {
             System.out.println("error");
         }
     }
+}
+//Interfaz grafica, hace falta implementarla bien
+class Server extends JFrame {
+    private JRadioButton[][] buttonArray = new JRadioButton[8][8];
+    private boolean h[][] = new boolean[8][8];
+    private boolean v[][] = new boolean[8][8];
+    private String nombrejugador1;
+    private String nombrejugador2;
+    private JLabel jugador1;
+    private JLabel jugador2;
+    private int puntajeJugador1 = 0;
+    private int puntajeJugador2 = 0;
+    //private boolean sigue = true;
+    private int count = 0;
+    private int ganador[][] = new int[8][8];
+    private int contador2;
+    private int contador3 = 0;
+    private String nombre = "PlayerData.bin";
+}
+public Server() {
+    setSize(900, 700);
+    setLocationRelativeTo(null);
+    setTitle("Conectar el punto");
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+    JMenuBar jmb = new JMenuBar();
+    JMenu file = new JMenu("Archivo");
+    jmb.add(file);
+    JMenuItem newgame = new JMenuItem("Nuevo Juego");
+    JMenuItem save = new JMenuItem("Guardar");
+    JMenuItem exit = new JMenuItem("Salir");
+    JMenuItem help = new JMenuItem("Regla");
+    JMenuItem load = new JMenuItem("Cargar");
+    file.add(newgame);
+    file.add(save);
+    file.add(load);
+    file.add(help);
+    file.add(exit);
 }
