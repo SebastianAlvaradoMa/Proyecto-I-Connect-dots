@@ -1,29 +1,40 @@
 import java.io.*;
 import java.net.*;
-//Importamos las librerias de archivos
-class ClienteSocket {
-    public static void main(String[] args) {
-        final String servidorIP = "localhost"; // el host local se puede cambiar por la ip local
-        final int puerto = 12345; //Igualmente el puerto se puede cambiar
 
-        try (Socket clienteSocket = new Socket(servidorIP, puerto)) {
+public class Client {
 
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
-            // Entrada para recibir datos del server
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
 
-            PrintWriter salida = new PrintWriter(clienteSocket.getOutputStream(), true);
-            // Salida para enviar datos al server
-
-            salida.println("Conexion con el server!");
-            // Enviar un mensaje al server
-
-            String respuestaServidor = entrada.readLine();
-            // Leer la respuesta del server y mostrarla en el cliente
-            System.out.println("Servidor dice: " + respuestaServidor);
-
+    public void startConnection(String ip, int port) {
+        try {
+            clientSocket = new Socket(ip, port);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (IOException e) {
-            System.out.println("error");
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public String sendMessage(String msg) {
+        try {
+            out.println(msg);
+            return in.readLine();
+        } catch (Exception e) {
+            return null;
         }
     }
-}
 
+    public void stopConnection() {
+        try {
+            in.close();
+            out.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
