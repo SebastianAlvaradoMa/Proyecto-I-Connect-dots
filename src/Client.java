@@ -15,7 +15,6 @@ public class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public String sendMessage(String msg) {
@@ -35,6 +34,5 @@ public class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
