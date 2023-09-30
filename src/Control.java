@@ -9,8 +9,8 @@ public class Control {
     private static InputStream inputStream;
 
     public static void main(String[] args) {
-        String puerto = "COM3"; // Cambia esto según el puerto COM de tu Arduino
-        int velocidad = 9600;  // La misma velocidad de baudios configurada en Arduino
+        String puerto = "COM3"; 
+        int velocidad = 9600;  
 
         try {
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(puerto);
