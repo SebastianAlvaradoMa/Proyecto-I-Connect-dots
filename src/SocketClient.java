@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class SocketClient extends JFrame {
 
-    //Variables para los sockets
+    /** Variables para los sockets */
     public static String playername1;
     static int allow = 0;
     static int allow2 = 0;
@@ -23,6 +23,11 @@ public class SocketClient extends JFrame {
     public static ObjectInputStream in;
     public static Socket socket;
 
+    
+    /** 
+     * @param objeto
+     * @throws IOException
+     */
     public static void enviar(MyData objeto) throws IOException {
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         String json = objectWriter.writeValueAsString(objeto);
@@ -30,6 +35,11 @@ public class SocketClient extends JFrame {
         out.flush();
     }
 
+    
+    /** 
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public static void leer() throws ClassNotFoundException, IOException {
         String receivedJson = (String) SocketClient.in.readObject();
         ObjectReader objectReader = SocketClient.objectMapper.readerFor(MyData.class);
@@ -37,12 +47,17 @@ public class SocketClient extends JFrame {
         System.out.println(receivedJson);
     }
 
+    
+    /** 
+     * @param args
+     * @throws ClassNotFoundException
+     */
     public static void main(String[] args) throws ClassNotFoundException {
         try {
 
             socket = new Socket("localhost", 12345);
 
-            // Crear flujos de entrada y salida para la comunicación
+            /** Crear flujos de entrada y salida para la comunicación */
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -57,10 +72,10 @@ public class SocketClient extends JFrame {
                 }
             }
 
-            // Crear un objeto MyData y llenarlo
+            /** Crear un objeto MyData y llenarlo */
             MyData dataToSend = new MyData(playername1, 42, true, null);
 
-            // Serializar el objeto y enviarlo al servidor
+            /** Serializar el objeto y enviarlo al servidor */
             objectMapper = new ObjectMapper();
             ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
             String json = objectWriter.writeValueAsString(dataToSend);
