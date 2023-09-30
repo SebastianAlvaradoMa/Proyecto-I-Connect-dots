@@ -1,0 +1,39 @@
+char receivedChar; // Variable para almacenar el comando recibido
+
+void setup() {
+  Serial.begin(9600); // Inicializa el puerto serie a 9600 baudios
+  // Configura tus pines y acciones según tus necesidades
+  pinMode(2, INPUT_PULLUP); // Ejemplo: Configura el pin 2 como entrada con resistencia pull-up para la flecha hacia arriba
+  pinMode(3, INPUT_PULLUP); // Ejemplo: Configura el pin 3 como entrada con resistencia pull-up para la flecha hacia abajo
+  pinMode(4, INPUT_PULLUP); // Ejemplo: Configura el pin 4 como entrada con resistencia pull-up para la flecha hacia la izquierda
+  pinMode(5, INPUT_PULLUP); // Ejemplo: Configura el pin 5 como entrada con resistencia pull-up para la flecha hacia la derecha
+  pinMode(6, INPUT_PULLUP); // Ejemplo: Configura el pin 6 como entrada con resistencia pull-up para la tecla Enter
+}
+
+void loop() {
+  // Detecta las acciones y envía comandos según corresponda
+  if (digitalRead(2) == LOW) {
+    sendCommand('U'); // Flecha hacia arriba
+    delay(200); // Evita la repetición rápida de la acción
+  }
+  if (digitalRead(3) == LOW) {
+    sendCommand('D'); // Flecha hacia abajo
+    delay(200);
+  }
+  if (digitalRead(4) == LOW) {
+    sendCommand('L'); // Flecha hacia la izquierda
+    delay(200);
+  }
+  if (digitalRead(5) == LOW) {
+    sendCommand('R'); // Flecha hacia la derecha
+    delay(200);
+  }
+  if (digitalRead(6) == LOW) {
+    sendCommand('E'); // Tecla Enter
+    delay(200);
+  }
+}
+
+void sendCommand(char command) {
+  Serial.print(command); // Envía el comando a través del puerto serie
+}
