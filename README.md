@@ -2,7 +2,7 @@
 Proyecto Connect dots, Tecnológico de Costa Rica
 Gustavo Calderon Perez, Sebastian Alvarado Ma
 
-Latex: [https://www.overleaf.com/read/fxqzvcrhvmkh](https://www.overleaf.com/read/fxqzvcrhvmkh](https://www.overleaf.com/read/fxqzvcrhvmkh)
+Latex: https://www.overleaf.com/4543194546fkgkzddszmgh
 
 Documentacion de diseño: https://docs.google.com/document/d/1OpAHAh6WtgTPxP7GEk1njVvyMoRepPxodXqLV_z9iBE/edit?usp=sharing
 
