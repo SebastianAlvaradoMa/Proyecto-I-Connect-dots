@@ -33,9 +33,6 @@ public class SocketServer {
                         // Data data = new MyData(players, connectionCount);
                         ObjectMapper objectMapper = new ObjectMapper();
                         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-                        // String dataJson = objectWriter.writeValueAsString(data);
-                        // out.writeObject(dataJson);
-                        // out.flush();
 
                         // Recibir el objeto JSON del cliente
                         String receivedJson = (String) in.readObject();

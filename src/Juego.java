@@ -1,16 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.swing.*;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
-
 public class Juego extends JFrame {
-    private static JRadioButton[][] buttonArray = new JRadioButton[8][8];
+    private JRadioButton[][] buttonArray = new JRadioButton[8][8];
     private boolean h[][] = new boolean[8][8];
     private boolean v[][] = new boolean[8][8];
     private String playername1;
@@ -23,8 +16,8 @@ public class Juego extends JFrame {
     private int win[][] = new int[8][8];
     private int count2;
     private int count3 = 0;
-    private static int cursorX = 0;
-    private static int cursorY = 0;
+    private int cursorX = 0;
+    private int cursorY = 0;
 
     public Juego() {
         setSize(900, 700);
@@ -112,99 +105,30 @@ public class Juego extends JFrame {
             setFocusTraversalKeysEnabled(false);
         }
 
-        private static SerialPort serialPort;
-        private static InputStream inputStream;
-
-        public void Control(){
-            String puerto = "COM3"; // Cambia esto según tu configuración
-            int velocidad = 9600; // La misma velocidad de baudios configurada en Arduino
-
-            try {
-                CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(puerto);
-                if (portIdentifier.isCurrentlyOwned()) {
-                    System.err.println("El puerto está en uso");
-                } else {
-                    CommPort commPort = portIdentifier.open(Control.class.getName(), 2000);
-
-                    if (commPort instanceof SerialPort) {
-                        serialPort = (SerialPort) commPort;
-                        serialPort.setSerialPortParams(velocidad, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-
-                        inputStream = serialPort.getInputStream();
-
-                        // Inicia un hilo para escuchar comandos desde Arduino
-                        Thread thread = new Thread(() -> {
-                            try {
-                                while (true) {
-                                    if (inputStream.available() > 0) {
-                                        char receivedChar = (char) inputStream.read();
-                                        // Realiza acciones según el comando recibido desde Arduino
-                                        handleCommand(receivedChar, null);
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        thread.start();
-                    } else {
-                        System.err.println("El puerto seleccionado no es un puerto serie.");
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        public void keyPrehandleCommand(char command) {
-            switch (command) {
-                case 'L':
-                    if (cursorY > 0) 
+        public void keyPressed(KeyEvent e) {
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_LEFT:
+                    if (cursorY > 0) // Izquierda
                         cursorY--;
                     break;
-                case 'R':
-                    if (cursorY < 7) 
+                case KeyEvent.VK_RIGHT:
+                    if (cursorY < 7) // Derecha
                         cursorY++;
                     break;
-                case 'U':
-                    if (cursorX > 0) 
+                case KeyEvent.VK_UP:
+                    if (cursorX > 0) // Arriba
                         cursorX--;
                     break;
-                case 'D':
-                    if (cursorX < 7) 
+                case KeyEvent.VK_DOWN:
+                    if (cursorX < 7) // Abajo
                         cursorX++;
                     break;
-                case 'E':
+                case KeyEvent.VK_ENTER:
                     buttonArray[cursorX][cursorY].setSelected(true);
                     break;
             }
             repaint();
-        }
-
-        private static void handleCommand(char command, KeyEvent e) {
-            switch (command) {
-                case 'U': // Flecha hacia arriba
-                    if (cursorX > 0) 
-                        cursorX--;
-                    break;
-                case 'D': // Flecha hacia abajo
-                    if (cursorX < 7) 
-                        cursorX++;
-                    break;
-                case 'L': // Flecha hacia la izquierda
-                    if (cursorY > 0) 
-                        cursorY--;
-                    break;
-                case 'R': // Flecha hacia la derecha
-                    if (cursorY < 7) 
-                        cursorY++;
-                    break;
-                case 'E': // Tecla Enter
-                    buttonArray[cursorX][cursorY].setSelected(true);
-                    break;
-                default:
-                    // Comando no reconocido, puedes manejarlo de acuerdo a tus necesidades
-                    break;
-            }
         }
 
         public void keyTyped(KeyEvent e) {
@@ -258,10 +182,11 @@ public class Juego extends JFrame {
                 }
             }
 
-            int dotSize = 30; 
+            // Dibuja un rectangulo
+            int dotSize = 30; // Ajusta el valor que necesita para los puntos
             int x = buttonArray[cursorX][cursorY].getX() + (buttonArray[cursorX][cursorY].getWidth() - dotSize) / 2;
             int y = buttonArray[cursorX][cursorY].getY() + (buttonArray[cursorX][cursorY].getHeight() - dotSize) / 2;
-            g.setColor(Color.RED); // Set the color for the rectangle (e.g., red)
+            g.setColor(Color.RED); // Color del rectangulo
             g.drawRect(x, y, dotSize, dotSize);
 
         }
@@ -309,15 +234,10 @@ public class Juego extends JFrame {
                 }
             }
         }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'keyPressed'");
-        }
     }
 
     public static void main(String[] args) {
         new Juego();
     }
 }
+

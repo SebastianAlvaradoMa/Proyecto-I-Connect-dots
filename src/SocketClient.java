@@ -12,6 +12,7 @@ import javax.swing.*;
 
 public class SocketClient extends JFrame {
 
+    //Variables para los sockets
     public static String playername1;
     static int allow = 0;
     static int allow2 = 0;
@@ -86,6 +87,7 @@ public class SocketClient extends JFrame {
 
 }
 
+//Variables de interfaz
 class project extends JFrame {
     private JRadioButton[][] buttonArray = new JRadioButton[8][8];
     private boolean h[][] = new boolean[8][8];
@@ -100,39 +102,30 @@ class project extends JFrame {
     private int count2;
     private int count3 = 0;
 
+
+    //Caracteristicas de Ventana
     public project() {
 
-        // addComponentListener(new ComponentAdapter() {
-        //     @Override
-        //     public void componentResized(ComponentEvent e) {
-        //         // This method will be called when the frame is repainted.
-        //         // You can perform custom actions here.
-        //     }
-        // });a
         setSize(900, 700);
         setLocationRelativeTo(null);
         setTitle("Connect the dot");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // setup the GUI
-
         // Parte de logica
         Player players = new Player();
         add(players, BorderLayout.NORTH);
-        // The player class add to border North
 
         Game game = new Game();
         add(game, BorderLayout.CENTER);
         Thread th = new Thread(game);
         th.start();
-        // The Game class add to border center
-        // and making the the Game class become thread
 
         setResizable(false);
         setVisible(true);
 
     }
 
+    //Obtener el Ganador
     public void getWinner() throws IOException {
         SocketClient.full = true;
         SocketClient.receivedData.setFull(true);
@@ -145,14 +138,15 @@ class project extends JFrame {
 
     }
 
-    // main method
+
+    //Clase padre JPanel, clase hijo Player
     protected class Player extends JPanel {
 
         private Font font = new Font("Serif", Font.BOLD, 30);
         private int allow = 0;
         private int allow2 = 0;
 
-        // make the different Font
+        //Creador clase jugador
         public Player() {
             playername1 = JOptionPane.showInputDialog("Player 1 enter your name: ");
             if (playername1.equals("")) {
@@ -164,11 +158,9 @@ class project extends JFrame {
                     }
                 }
             }
-            // player 2 must input the name
             player1 = new JLabel(SocketClient.playername1 + ": " + playerscore1);
             player1.setFont(font);
             add(player1);
-            // setup the player information and add to the GUI
         }
 
     }
@@ -188,13 +180,13 @@ class project extends JFrame {
                     add(buttonArray[i][j]);
                 }
             }
-            // The setup the GUI for the Game using GridLayout
 
         }
 
         public void paint(Graphics g) {
 
             super.paint(g);
+            //Matriz de botones
 
             // algunas partes server
             for (int i = 0; i < 8; i++)
@@ -207,14 +199,10 @@ class project extends JFrame {
                     } else if (buttonArray[i][j].isSelected() && buttonArray[i][j + 1].isSelected()
                             && h[i][j] == true) {
                         deselect();
-                        JOptionPane.showMessageDialog(null, "You can not connect this two!");
+                        JOptionPane.showMessageDialog(null, "No puedes conectar estos dos!");
                     }
                 }
-            // When two horizon dot are selected will draw line
-            // And the count is to make it thing whitch player is playing
-            // count 3 is total line drawed
 
-            // algnas en server
             for (int i = 0; i < 7; i++)
                 for (int j = 0; j < 8; j++) {
                     if (buttonArray[i][j].isSelected() && buttonArray[i + 1][j].isSelected() && v[i][j] == false) {
@@ -228,7 +216,6 @@ class project extends JFrame {
                         JOptionPane.showMessageDialog(null, "You can not connect this two!");
                     }
                 }
-            // Any two vertical dot are selected will draw line like horizon line
 
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 7; j++) {
@@ -246,9 +233,7 @@ class project extends JFrame {
                     }
                 }
             }
-            // draw line using getX and getY if the horizon array is true or vertical array
-            // is true
-        }// paint
+        }
 
         public void deselect() {
 
@@ -260,15 +245,14 @@ class project extends JFrame {
 
             }
         }
-        // deselect everything after you selected 2 dot will deselect everything
 
         public void run() {
 
             System.out.println("HOLA");
             // algunas server
-            while (true)// using while loop to check everytime
+            //Corre el juego
+            while (true)
             {
-                // read server
                 try {
                     System.out.println("adentro");
                     SocketClient.leer();
@@ -284,7 +268,6 @@ class project extends JFrame {
                     }
                     SocketClient.enviar(SocketClient.receivedData);
                 } catch (ClassNotFoundException | IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
@@ -293,9 +276,8 @@ class project extends JFrame {
         }
 
         private void play() {
-            // the currentplayer will be red
             repaint();
-            // algunas server
+            // jugar y obtener valores de ganador
             for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 7; j++) {
                     if (h[i][j] == true && h[i + 1][j] == true && v[i][j] == true && v[i][j + 1] == true
@@ -304,8 +286,7 @@ class project extends JFrame {
                         player1.setText(playername1 + ": " + playerscore1 + "                              ");
                         win[i][j] = 1;
                         count--;
-                    } // if the dot make a box will get 1 point and change the win array to 1 so will
-                    // not will duplicate the score
+                    } 
                     else if (h[i][j] == true && h[i + 1][j] == true && v[i][j] == true && v[i][j + 1] == true
                             && count2 == 2 && win[i][j] == 0) {
                         playerscore2++;
@@ -313,7 +294,7 @@ class project extends JFrame {
                         win[i][j] = 1;
                         count--;
                     }
-                    // the score for player 2
+                    
                 }
             }
 
@@ -324,11 +305,9 @@ class project extends JFrame {
                     SocketClient.in.close();
                     SocketClient.out.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
-            // if the all line is drawed so will calculcated the winner
 
         }
     }
